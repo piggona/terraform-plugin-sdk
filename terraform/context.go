@@ -222,6 +222,10 @@ func (c *Context) Schemas() *Schemas {
 	return c.schemas
 }
 
+func (c *Context) GetChanges() *plans.Changes {
+	return c.changes
+}
+
 type ContextGraphOpts struct {
 	// If true, validates the graph structure (checks for cycles).
 	Validate bool
@@ -701,6 +705,10 @@ func (c *Context) SetVariable(k string, v cty.Value) {
 	}
 }
 
+func (c *Context) AquireRun(phase string) func() {
+	return c.acquireRun(phase)
+}
+
 func (c *Context) acquireRun(phase string) func() {
 	// With the run lock held, grab the context lock to make changes
 	// to the run context.
@@ -745,6 +753,10 @@ func (c *Context) releaseRun() {
 
 	// Unset the context
 	c.runContext = nil
+}
+
+func (c *Context) Walk(graph *Graph, operation walkOperation) (*ContextGraphWalker, tfdiags.Diagnostics) {
+	return c.walk(graph, operation)
 }
 
 func (c *Context) walk(graph *Graph, operation walkOperation) (*ContextGraphWalker, tfdiags.Diagnostics) {

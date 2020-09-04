@@ -16,3 +16,7 @@ const (
 	walkImport
 	walkEval // used just to prepare EvalContext for expression evaluation, with no other actions
 )
+
+func NewOperation(operation byte) walkOperation {
+	return walkOperation(operation)
+}

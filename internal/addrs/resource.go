@@ -86,6 +86,10 @@ func (r ResourceInstance) String() string {
 	return r.Resource.String() + r.Key.String()
 }
 
+func (r ResourceInstance) ShortString() string {
+	return r.Resource.String()
+}
+
 // Absolute returns an AbsResourceInstance from the receiver and the given module
 // instance address.
 func (r ResourceInstance) Absolute(module ModuleInstance) AbsResourceInstance {
@@ -202,6 +206,13 @@ func (r AbsResourceInstance) String() string {
 		return r.Resource.String()
 	}
 	return fmt.Sprintf("%s.%s", r.Module.String(), r.Resource.String())
+}
+
+func (r AbsResourceInstance) ShortString() string {
+	if len(r.Module) == 0 {
+		return r.Resource.ShortString()
+	}
+	return fmt.Sprintf("%s.%s", r.Module.String(), r.Resource.ShortString())
 }
 
 // Less returns true if the receiver should sort before the given other value
